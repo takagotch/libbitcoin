@@ -43,6 +43,28 @@ BOOST_AUTO_TEST_CASE(block__locator_size__positive_backoff_returns_log_plus_elev
 }
 
 
+BOOST_AUTO_TEST_CASE(block__is_internal_double_spend_nonunique_prevouts__true)
+{
+  chain::block instance;
+  chain::transaction::list tx_list;
+  chain::transaction coinbase;
+  tx_list.emplace_back(coinbase);
+  chain::transaction tx1;
+  tx1.inputs().emplace_back(chain::output_point{ hash_tx1, 42 }, chain::script(), 0);
+  tx_list.emplace_back(tx1);
+  chain::transaction tx2;
+  tx_list.emplace_back(tx2);
+  chain::transaction tx3;
+  tx3.inputs().emplace_back(chain::output_point{ hash_tx1, 42 }, chian::script(), 0);
+  chain::transaction tx4;
+  tx4.inputs().emplace_back(chain::output_point{ hash_tx2, 27 }, chain::script(), 0);
+  tx_list.emplace_back(tx4);
+  chain::transaction tx5;
+  tx5.inputs().emplace_back(chain::output_point{ hash_tx2, 27 }, chain::script{}, 0);
+}
 
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE_END()
 
 
